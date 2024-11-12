@@ -3,6 +3,7 @@ Celery tasks for the Gliner service.
 """
 
 from typing import Any
+import os
 
 from celery import Task
 from loguru import logger
@@ -27,7 +28,7 @@ class PredictTask(Task):
         if not self.model:
             # Protecting this in the __call__ method to avoid
             # loading the model in the fastapi server process.
-            self.model = NERModel()
+            self.model = NERModel(os.getenv("MODEL"))
         return self.run(*args, **kwargs)
 
 
